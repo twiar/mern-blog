@@ -1,4 +1,4 @@
-import PostModel from '../models/Post.js';
+import PostModel from "../models/Post.js";
 
 export const getLastTags = async (req, res) => {
 	try {
@@ -13,19 +13,19 @@ export const getLastTags = async (req, res) => {
 	} catch (err) {
 		console.log(err);
 		res.status(500).json({
-			message: 'Не удалось получить статьи',
+			message: "Не удалось получить статьи",
 		});
 	}
 };
 
 export const getAll = async (req, res) => {
 	try {
-		const posts = await PostModel.find().populate('user').exec();
+		const posts = await PostModel.find().populate("user").exec();
 		res.json(posts);
 	} catch (err) {
 		console.log(err);
 		res.status(500).json({
-			message: 'Не удалось получить статьи',
+			message: "Не удалось получить статьи",
 		});
 	}
 };
@@ -42,29 +42,29 @@ export const getOne = async (req, res) => {
 				$inc: { viewsCount: 1 },
 			},
 			{
-				returnDocument: 'after',
+				returnDocument: "after",
 			},
 			(err, doc) => {
 				if (err) {
 					console.log(err);
 					return res.status(500).json({
-						message: 'Не удалось вернуть статьи',
+						message: "Не удалось вернуть статьи",
 					});
 				}
 
 				if (!doc) {
 					return res.status(404).json({
-						message: 'Статья не найдена',
+						message: "Статья не найдена",
 					});
 				}
 
 				res.json(doc);
 			},
-		);
+		).populate("user");
 	} catch (err) {
 		console.log(err);
 		res.status(500).json({
-			message: 'Не удалось получить статьи',
+			message: "Не удалось получить статьи",
 		});
 	}
 };
@@ -80,13 +80,13 @@ export const remove = async (req, res) => {
 				if (err) {
 					console.log(err);
 					return res.status(500).json({
-						message: 'Не удалось удалить статьи',
+						message: "Не удалось удалить статьи",
 					});
 				}
 
 				if (!doc) {
 					return res.status(404).json({
-						message: 'Статья не найдена',
+						message: "Статья не найдена",
 					});
 				}
 
@@ -98,7 +98,7 @@ export const remove = async (req, res) => {
 	} catch (err) {
 		console.log(err);
 		res.status(500).json({
-			message: 'Не удалось получить статьи',
+			message: "Не удалось получить статьи",
 		});
 	}
 };
@@ -109,7 +109,7 @@ export const create = async (req, res) => {
 			title: req.body.title,
 			text: req.body.text,
 			imageUrl: req.body.imageUrl,
-			tags: req.body.tags,
+			tags: req.body.tags.split(","),
 			user: req.userId,
 		});
 
@@ -119,7 +119,7 @@ export const create = async (req, res) => {
 	} catch (err) {
 		console.log(err);
 		res.status(500).json({
-			message: 'Не удалось создать статью',
+			message: "Не удалось создать статью",
 		});
 	}
 };
@@ -146,7 +146,7 @@ export const update = async (req, res) => {
 	} catch (err) {
 		console.log(err);
 		res.status(500).json({
-			message: 'Не удалось обновить статью',
+			message: "Не удалось обновить статью",
 		});
 	}
 };
