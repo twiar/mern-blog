@@ -16,7 +16,6 @@ export const Login = () => {
 	const {
 		register,
 		handleSubmit,
-		setError,
 		formState: { errors, isValid },
 	} = useForm({
 		defaultValues: {
@@ -30,7 +29,7 @@ export const Login = () => {
 		const data = await dispatch(fetchAuth(values));
 
 		if (!data.payload) {
-			return alert("Не удалось авторизоваться");
+			return alert("Не удалось авторизоваться!");
 		}
 
 		if ("token" in data.payload) {
@@ -65,7 +64,7 @@ export const Login = () => {
 					{...register("password", { required: "Укажите пароль" })}
 					fullWidth
 				/>
-				<Button type="submit" size="large" variant="contained" fullWidth>
+				<Button disabled={!isValid} type="submit" size="large" variant="contained" fullWidth>
 					Войти
 				</Button>
 			</form>
